@@ -10,6 +10,7 @@ public class NewBehaviourScript : MonoBehaviour
     public Quaternion angulo;
     public float grado;
 
+    public float distancia;
     public GameObject target;
     public bool atacando;
 
@@ -20,64 +21,71 @@ public class NewBehaviourScript : MonoBehaviour
 
     public void Comportamiento_Enemigo()
     {
-        if(Vector3.Distance(transform.position, target.transform.position) > 5) { 
-
-            cronometro += 1 * Time.deltaTime;
-        if (cronometro >= 2)
+        if (Vector3.Distance(transform.position, target.transform.position) > 5)
         {
-            rutina = Random.Range(0, 2);
-            cronometro = 0;
-        }
-        switch (rutina)
-        {
-            case 0:
-                ani.SetBool("walk", false);
-                break;
 
-            case 1:
-                grado = Random.Range(0, 360);
-                rutina++;
-                break;
-
-            case 2:
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, angulo, 0.5f);
-                transform.Translate(Vector3.forward * 1 * Time.deltaTime);
-                ani.SetBool("walk", true);
-                break;
-        }
-    }
-    else
-    {
-
-            if (Vector3.Distance(transform.position, target.transform.position) > 1 && !atacando)
+            cronometro += Time.deltaTime;
+            if (cronometro >= 2)
             {
-                var lookPos = target.transform.position - transform.position;
-                lookPos.y = 0;
-                var rotation = Quaternion.LookRotation(lookPos);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
-                ani.SetBool("walk", false);
-
-                ani.SetBool("run", true);
-                transform.Translate(Vector3.forward * 2 * Time.deltaTime);
-
-                ani.SetBool("attack", false);
-
+                rutina++;  
+            if (rutina > 2)
+                {
+                    rutina = 0;
+                }
+                cronometro = 0;
 
             }
-            else
+            switch (rutina)
             {
-                ani.SetBool("walk", false);
-                ani.SetBool("run", false);
+                case 0:
+                    ani.SetBool("walk", false);
+                    ani.SetBool("run", false);
+                    ani.SetBool("attack", false);
+                    break;
 
-                ani.SetBool("attack", true);
-                atacando = true;
+                case 1:
+                    grado = Random.Range(0, 360);
+                    angulo = Quaternion.Euler(0, grado, 0);
+                    
+                    break;
 
+                case 2:
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, angulo, 0.5f);
+                    transform.Translate(Vector3.forward * Time.deltaTime);
+                    ani.SetBool("walk", true);
+                    ani.SetBool("run", false);
+                    break;
             }
+        }
+        else if (Vector3.Distance(transform.position, target.transform.position) > distancia && !atacando)
+        {
+            var lookPos = target.transform.position - transform.position;
+            lookPos.y = 0;
+            var rotation = Quaternion.LookRotation(lookPos);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, 2);
+
+            ani.SetBool("walk", false);
+            ani.SetBool("run", true);
+            ani.SetBool("attack", false);
+
+            transform.Translate(Vector3.forward * 2 * Time.deltaTime);
+        }
+        else
+        {
+           
+            ani.SetBool("walk", false);
+            ani.SetBool("run", false);
+            ani.SetBool("attack", true);
+            atacando = true;
+
+        }
+
+      
     }
 
-}
+    
 
-public void Final_Ani()
+    public void Final_Ani()
     {
         ani.SetBool("attack", false);
         atacando = false;
@@ -85,6 +93,6 @@ public void Final_Ani()
 
     void Update()
     {
-      Comportamiento_Enemigo();
+        Comportamiento_Enemigo();
     }
 }

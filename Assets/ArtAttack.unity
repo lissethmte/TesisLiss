@@ -796,10 +796,9 @@ MonoBehaviour:
   ani: {fileID: 157612687}
   angulo: {x: 0, y: 0, z: 0, w: 0}
   grado: 0
+  distancia: 2
   target: {fileID: 1319956726}
-  velocidad: 2
-  distanciaDeteccion: 5
-  rotacionVelocidad: 200
+  atacando: 0
 --- !u!4 &162480027 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 34a27426b2362624eb327d7c273d770c, type: 3}
