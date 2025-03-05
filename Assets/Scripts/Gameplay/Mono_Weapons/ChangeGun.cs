@@ -86,6 +86,17 @@ public class ChangeGun : MonoBehaviour
             gunE.SetActive(false);
             gunF.SetActive(true);
         }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            WeaponReader.Instance.UpdateGun(5);
+            gunA.SetActive(false);
+            gunB.SetActive(false);
+            gunC.SetActive(false);
+            gunD.SetActive(false);
+            gunE.SetActive(false);
+            gunF.SetActive(false);
+        }
+
 
     }
 }

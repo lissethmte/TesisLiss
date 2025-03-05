@@ -4,44 +4,48 @@ using UnityEngine;
 
 public class PickAndCac : MonoBehaviour
 {
-    
     public GameObject armaVerdePre;
-
-    
-   
-    public bool canPickUp = false;
+    private bool canPickUp = false;
+    private bool isPickedUp = false; // Para rastrear si el arma está equipada o no
 
     private void Update()
     {
-        
         if (canPickUp && Input.GetKeyDown(KeyCode.E))
         {
-            
-            gameObject.SetActive(false);
+            isPickedUp = !isPickedUp; // Alternar estado
 
-            
-            if (armaVerdePre != null)
+            if (isPickedUp)
             {
-                armaVerdePre.SetActive(true);
+                gameObject.SetActive(true);
+                if (armaVerdePre != null)
+                {
+                    armaVerdePre.SetActive(true);
+                }
+            }
+            else
+            {
+                gameObject.SetActive(false);
+                if (armaVerdePre != null)
+                {
+                    armaVerdePre.SetActive(false);
+                }
             }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-       
         if (other.CompareTag("Player"))
         {
-            canPickUp = true; 
+            canPickUp = true;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-       
         if (other.CompareTag("Player"))
         {
-            canPickUp = false; 
+            canPickUp = false;
         }
     }
 }
