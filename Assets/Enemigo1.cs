@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Enemigo1 : MonoBehaviour
 {
     public int rutina;
     public float cronometro;
@@ -17,6 +17,7 @@ public class NewBehaviourScript : MonoBehaviour
     void Start()
     {
         ani = GetComponent<Animator>();
+        target = GameObject.FindGameObjectWithTag("Player");
     }
 
     public void Comportamiento_Enemigo()

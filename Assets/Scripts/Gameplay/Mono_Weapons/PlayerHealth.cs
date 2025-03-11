@@ -41,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
     // Detecta la colisión con las balas del enemigo
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyBullet"))  // Si la bala tiene el tag "EnemyBullet"
+        if (other.CompareTag("Enemy"))  // Si la bala tiene el tag "EnemyBullet"
         {
             EnemyBullet bullet = other.GetComponent<EnemyBullet>();  // Obtener el script de la bala del enemigo
             if (bullet != null)

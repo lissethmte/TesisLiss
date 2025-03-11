@@ -11,12 +11,6 @@ public class FPC : MonoBehaviour
     bool lockedCursor = true;
 
 
-    void Start()
-    {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
    
     void Update()
     {
@@ -29,4 +23,11 @@ public class FPC : MonoBehaviour
 
         player.Rotate(Vector3.up * inputX);
     }
+
+    public void DesactivarMouse()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
 }

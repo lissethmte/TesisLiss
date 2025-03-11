@@ -11,6 +11,7 @@ TagManager:
   - verde
   - EnemyBullet
   - CuboInvisible
+  - ZoneTimer
   layers:
   - Default
   - TransparentFX
