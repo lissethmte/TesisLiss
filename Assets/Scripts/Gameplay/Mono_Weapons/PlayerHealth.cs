@@ -1,55 +1,65 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using TMPro; // Importa TextMeshPro
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100;  // Salud máxima del jugador
-    private int currentHealth;   // Salud actual del jugador
+    public int maxHealth = 100; // Salud máxima
+    private int currentHealth;   // Salud actual
+    public bool isDead = false;  // Si el jugador está muerto
 
-    public GameObject deathEffect;  // Efecto visual o animación al morir
-    public bool isDead = false;    // Estado de muerte del jugador
+    public int enemyDamage = 10; // Daño que el jugador recibe de los enemigos
+    public float damageInterval = 1f; // Tiempo entre cada daño recibido
+    private float nextDamageTime = 0f;
+
+    public TMP_Text healthText; // Referencia al texto de TextMeshPro para la salud
 
     private void Start()
     {
-        currentHealth = maxHealth;  // Inicializar la salud del jugador con el máximo valor
+        currentHealth = maxHealth; // Inicializar la salud
+        UpdateHealthUI(); // Actualizar la UI de la salud
     }
 
-    // Método para recibir daño
     public void TakeDamage(int damage)
     {
-        if (isDead) return;  // Si el jugador ya está muerto, no recibir daño
+        if (isDead) return; // Si el jugador está muerto, no recibe más daño
 
-        currentHealth -= damage;  // Reducir la salud actual por el daño recibido
-        Debug.Log("Jugador recibió " + damage + " de daño. Salud restante: " + currentHealth);
+        currentHealth -= damage; // Reducir la salud
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegurarse que no sea negativa
+
+        UpdateHealthUI(); // Actualiza el texto de la salud
 
         if (currentHealth <= 0)
         {
-            Die();  // Llamar al método de muerte si la salud llega a 0 o menos
+            Die(); // Si la salud llega a 0, el jugador muere
         }
     }
 
-    // Método para manejar la muerte del jugador
-   
-   private void Die()
-   {
-            Debug.Log("El jugador ha muerto!");
-            // Aquí reiniciamos el nivel cuando el jugador muere
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Recarga la escena actual
-   }
-   
-
-    // Detecta la colisión con las balas del enemigo
-    private void OnTriggerEnter(Collider other)
+    private void UpdateHealthUI()
     {
-        if (other.CompareTag("Enemy"))  // Si la bala tiene el tag "EnemyBullet"
+        if (healthText != null)
         {
-            EnemyBullet bullet = other.GetComponent<EnemyBullet>();  // Obtener el script de la bala del enemigo
-            if (bullet != null)
-            {
-                TakeDamage(bullet.damage);  // Aplicar daño al jugador
-            }
+            // Actualiza el texto para mostrar la salud actual sobre la máxima
+            healthText.text = "Health: " + currentHealth;
+        }
+    }
 
-            Destroy(other.gameObject);  // Destruir la bala después de colisionar
+    private void Die()
+    {
+        Debug.Log("El jugador ha muerto!");
+        isDead = true;
+        // Aquí podrías agregar una animación de muerte o cambiar a una escena de Game Over
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); // Recargar la escena
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            if (Time.time >= nextDamageTime)
+            {
+                TakeDamage(enemyDamage);
+                nextDamageTime = Time.time + damageInterval; // Control del intervalo de daño
+            }
         }
     }
 }
