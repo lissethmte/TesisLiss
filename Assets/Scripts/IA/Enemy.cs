@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public VisualEffect efectoDano;
     public GameObject objetoVFX;
     public float duracionVFX = 1f;
+    public int enemyScore = 10;
 
     // Nuevo VFX
     public VisualEffect efectoDano2;
@@ -61,6 +62,7 @@ public class Enemy : MonoBehaviour
     private void Die()
     {
         Debug.Log("Enemigo ha muerto!");
+        GameManager.instance.AddScore(enemyScore);
         Destroy(gameObject);
     }
 

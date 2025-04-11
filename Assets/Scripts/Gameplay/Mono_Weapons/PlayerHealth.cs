@@ -1,14 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro; // Importa TextMeshPro
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 100; // Salud máxima
+    public int maxHealth = 100; // Salud mÃ¡xima
     private int currentHealth;   // Salud actual
-    public bool isDead = false;  // Si el jugador está muerto
+    public bool isDead = false;  // Si el jugador estÃ¡ muerto
 
-    public int enemyDamage = 10; // Daño que el jugador recibe de los enemigos
-    public float damageInterval = 1f; // Tiempo entre cada daño recibido
+    public int enemyDamage = 10; // DaÃ±o que el jugador recibe de los enemigos
+    public float damageInterval = 1f; // Tiempo entre cada daÃ±o recibido
     private float nextDamageTime = 0f;
 
     public TMP_Text healthText; // Referencia al texto de TextMeshPro para la salud
@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (isDead) return; // Si el jugador está muerto, no recibe más daño
+        if (isDead) return; // Si el jugador estÃ¡ muerto, no recibe mÃ¡s daÃ±o
 
         currentHealth -= damage; // Reducir la salud
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Asegurarse que no sea negativa
@@ -38,7 +38,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (healthText != null)
         {
-            // Actualiza el texto para mostrar la salud actual sobre la máxima
+            // Actualiza el texto para mostrar la salud actual sobre la mÃ¡xima
             healthText.text = "Health: " + currentHealth;
         }
     }
@@ -47,8 +47,7 @@ public class PlayerHealth : MonoBehaviour
     {
         Debug.Log("El jugador ha muerto!");
         isDead = true;
-        // Aquí podrías agregar una animación de muerte o cambiar a una escena de Game Over
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name); // Recargar la escena
+        GameManager.instance.GameOver(); // Llamar a Game Over
     }
 
     private void OnTriggerStay(Collider other)
@@ -58,7 +57,7 @@ public class PlayerHealth : MonoBehaviour
             if (Time.time >= nextDamageTime)
             {
                 TakeDamage(enemyDamage);
-                nextDamageTime = Time.time + damageInterval; // Control del intervalo de daño
+                nextDamageTime = Time.time + damageInterval; // Control del intervalo de daÃ±o
             }
         }
     }
